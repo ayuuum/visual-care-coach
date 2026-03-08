@@ -13,13 +13,11 @@ const GuidePage = () => {
   const startTimeRef = useRef<number>(Date.now());
   const [hasStarted, setHasStarted] = useState(false);
 
-  // Start camera via user gesture (required for mobile Safari)
   const handleStartCamera = async () => {
     await camera.start();
     startTimeRef.current = Date.now();
   };
 
-  // Start AI polling when camera is active
   useEffect(() => {
     if (camera.isActive && !hasStarted) {
       setHasStarted(true);
@@ -27,14 +25,12 @@ const GuidePage = () => {
     }
   }, [camera.isActive, hasStarted]);
 
-  // Speak instruction when it changes
   useEffect(() => {
     if (ai.response?.instruction) {
       speech.speak(ai.response.instruction);
     }
   }, [ai.response?.instruction]);
 
-  // Navigate to complete when done
   useEffect(() => {
     if (ai.response?.isComplete) {
       handleStop(true);
@@ -81,8 +77,8 @@ const GuidePage = () => {
   }
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden bg-background">
-      {/* Camera feed — full screen */}
+    <div className="relative h-screen w-screen overflow-hidden bg-black">
+      {/* Camera feed */}
       <video
         ref={camera.videoRef}
         className="absolute inset-0 w-full h-full object-cover"
@@ -92,33 +88,68 @@ const GuidePage = () => {
       />
       <canvas ref={camera.canvasRef} className="hidden" />
 
+      {/* Vignette overlay */}
+      <div className="absolute inset-0 hud-vignette z-[1]" />
+
       {/* Scanning overlay */}
       {ai.isAnalyzing && (
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="scanning-line absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent opacity-60" />
+        <div className="absolute inset-0 pointer-events-none z-[2]">
+          <div className="scanning-line absolute left-0 right-0" />
         </div>
       )}
 
-      {/* Top bar — scene recognition */}
-      <div className="absolute top-0 left-0 right-0 p-4 z-10">
-        <div className="hud-panel inline-flex items-center gap-2 px-4 py-2">
-          <Search className="w-4 h-4 text-primary" />
-          <span className="text-sm font-mono text-white/80">
-            {ai.response?.scene ?? "シーンを検出中..."}
-          </span>
-          {ai.isAnalyzing && (
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-          )}
+      {/* Top bar — scene + status */}
+      <div className="absolute top-0 left-0 right-0 p-4 pt-[max(1rem,env(safe-area-inset-top))] z-10">
+        <div className="flex items-center justify-between">
+          <div className="hud-panel hud-glow-border inline-flex items-center gap-2 px-4 py-2">
+            <Search className="w-3.5 h-3.5" style={{ color: 'hsl(175 80% 55%)' }} />
+            <span className="text-sm font-mono text-white/80">
+              {ai.response?.scene ?? "検出中..."}
+            </span>
+          </div>
+          <div className="hud-panel inline-flex items-center gap-2 px-3 py-2">
+            <div className="hud-status-dot" />
+            <span className="text-xs font-mono text-white/60 uppercase tracking-widest">Live</span>
+          </div>
         </div>
       </div>
 
-      {/* Center — instruction HUD */}
-      <div className="absolute bottom-28 left-0 right-0 px-4 z-10">
+      {/* Initial loading */}
+      {showInitialLoading && (
+        <div className="absolute top-20 left-0 right-0 px-4 z-10 flex justify-center">
+          <div className="hud-panel hud-glow-border inline-flex items-center gap-2 px-4 py-2">
+            <Loader2 className="w-4 h-4 animate-spin" style={{ color: 'hsl(175 80% 55%)' }} />
+            <span className="text-sm font-mono text-white/70">AI接続中...</span>
+          </div>
+        </div>
+      )}
+
+      {/* AI error banner */}
+      {ai.error && (
+        <div className="absolute top-20 left-0 right-0 px-4 z-10 flex justify-center">
+          <div className="hud-panel inline-flex items-center gap-2 px-4 py-2 border-destructive/40">
+            <WifiOff className="w-4 h-4 text-destructive" />
+            <span className="text-sm font-mono text-destructive">{ai.error}</span>
+            {ai.isPaused && (
+              <button onClick={ai.retry} className="ml-2 p-1 rounded hover:bg-white/10">
+                <RefreshCw className="w-4 h-4" style={{ color: 'hsl(175 80% 55%)' }} />
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Instruction panel */}
+      <div className="absolute bottom-32 left-0 right-0 px-4 z-10">
         <div
-          className={`hud-panel px-6 py-5 ${
-            isWarning ? "border-warning/50 bg-warning/10" : ""
+          className={`hud-panel hud-glow-border hud-corner-marks hud-accent-line px-6 py-5 ${
+            isWarning ? "border-warning/50 !border-l-warning/70" : ""
           }`}
         >
+          {/* Extra corners via spans */}
+          <span className="hud-corner-tr" />
+          <span className="hud-corner-bl" />
+
           {isWarning && (
             <div className="flex items-center gap-2 mb-2">
               <AlertTriangle className="w-4 h-4 text-warning" />
@@ -137,56 +168,33 @@ const GuidePage = () => {
         </div>
       </div>
 
-      {/* Initial loading state */}
-      {showInitialLoading && (
-        <div className="absolute top-16 left-0 right-0 px-4 z-10 flex justify-center">
-          <div className="hud-panel inline-flex items-center gap-2 px-4 py-2">
-            <Loader2 className="w-4 h-4 text-primary animate-spin" />
-            <span className="text-sm font-mono text-white/70">AI接続中...</span>
-          </div>
-        </div>
-      )}
-
-      {/* AI error banner */}
-      {ai.error && (
-        <div className="absolute top-16 left-0 right-0 px-4 z-10 flex justify-center">
-          <div className="hud-panel inline-flex items-center gap-2 px-4 py-2 border-destructive/40">
-            <WifiOff className="w-4 h-4 text-destructive" />
-            <span className="text-sm font-mono text-destructive">{ai.error}</span>
-            {ai.isPaused && (
-              <button onClick={ai.retry} className="ml-2 p-1 rounded hover:bg-white/10">
-                <RefreshCw className="w-4 h-4 text-primary" />
-              </button>
-            )}
-          </div>
-        </div>
-      )}
-
       {/* Bottom controls */}
-      <div className="absolute bottom-6 left-0 right-0 px-4 z-10 flex items-center justify-center gap-4">
+      <div className="absolute bottom-6 left-0 right-0 px-4 pb-[max(0.5rem,env(safe-area-inset-bottom))] z-10 flex items-center justify-center gap-6">
         <button
           onClick={speech.toggle}
-          className="hud-panel w-14 h-14 flex items-center justify-center"
+          className="hud-panel hud-glow-border flex flex-col items-center justify-center w-16 h-16 rounded-2xl transition-all hover:shadow-[0_0_20px_hsl(175_80%_55%/0.3)]"
         >
           {speech.isEnabled ? (
-            <Volume2 className="w-5 h-5 text-primary" />
+            <Volume2 className="w-5 h-5" style={{ color: 'hsl(175 80% 55%)' }} />
           ) : (
             <VolumeX className="w-5 h-5 text-white/40" />
           )}
+          <span className="text-[10px] font-mono text-white/50 mt-1">音声</span>
         </button>
 
         <button
           onClick={() => handleStop(false)}
-          className="hud-panel w-14 h-14 flex items-center justify-center border-destructive/40"
+          className="hud-panel flex flex-col items-center justify-center w-16 h-16 rounded-2xl border-destructive/30 transition-all hover:shadow-[0_0_20px_hsl(0_72%_55%/0.3)]"
         >
           <Square className="w-5 h-5 text-destructive" />
+          <span className="text-[10px] font-mono text-white/50 mt-1">停止</span>
         </button>
       </div>
 
       {/* Camera error fallback */}
       {camera.error && (
-        <div className="absolute inset-0 flex items-center justify-center bg-background/90 z-20">
-          <div className="hud-panel p-8 max-w-sm text-center">
+        <div className="absolute inset-0 flex items-center justify-center bg-black/90 z-20">
+          <div className="hud-panel hud-glow-border p-8 max-w-sm text-center">
             <p className="text-white font-semibold mb-2">カメラエラー</p>
             <p className="text-sm text-white/60 mb-4">{camera.error}</p>
             <button
