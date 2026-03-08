@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Volume2, VolumeX, Square, AlertTriangle, WifiOff, RefreshCw, Loader2, Camera, Eye, Activity } from "lucide-react";
+import { Volume2, VolumeX, Square, AlertTriangle, WifiOff, RefreshCw, Loader2, Camera, Eye, Activity, ImageIcon } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useCamera } from "@/hooks/useCamera";
 import { useSpeech } from "@/hooks/useSpeech";
 import { useAIGuide } from "@/hooks/useAIGuide";
@@ -176,6 +177,20 @@ const GuidePage = () => {
               <div className="flex items-center gap-2 px-5 pt-4 pb-1">
                 <AlertTriangle className="w-5 h-5 text-amber-300" />
                 <span className="text-xs font-bold text-amber-300 uppercase tracking-widest">⚠ Warning</span>
+              </div>
+            )}
+            {/* Illustration */}
+            {(ai.isGeneratingImage || ai.response?.illustrationUrl) && (
+              <div className="px-5 pt-4">
+                {ai.isGeneratingImage && !ai.response?.illustrationUrl ? (
+                  <Skeleton className="w-full h-32 rounded-xl bg-white/10" />
+                ) : ai.response?.illustrationUrl ? (
+                  <img
+                    src={ai.response.illustrationUrl}
+                    alt="ケア手順イラスト"
+                    className="w-full h-32 object-contain rounded-xl bg-white/5"
+                  />
+                ) : null}
               </div>
             )}
             <div className="px-5 py-4 flex items-start gap-3">

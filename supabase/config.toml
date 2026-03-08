@@ -1,1 +1,4 @@
 project_id = "ehzqykhlwrdrgeourjss"
+
+[functions.generate-instruction-image]
+verify_jwt = false
