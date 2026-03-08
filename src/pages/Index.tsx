@@ -57,7 +57,7 @@ const Index = () => {
         {/* Start button */}
         <button
           onClick={() => navigate("/guide")}
-          className="w-full py-4 rounded-2xl bg-primary text-primary-foreground font-bold text-lg tracking-wide hover:brightness-110 transition-all active:scale-[0.97] flex items-center justify-center gap-2"
+          className="w-full py-5 rounded-2xl bg-primary text-primary-foreground font-bold text-xl tracking-wide hover:brightness-110 transition-all active:scale-[0.97] flex items-center justify-center gap-2"
         >
           ガイドを開始する
           <ArrowRight className="w-5 h-5" />
