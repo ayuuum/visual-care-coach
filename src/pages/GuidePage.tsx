@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Volume2, VolumeX, Square, Search, AlertTriangle } from "lucide-react";
+import { Volume2, VolumeX, Square, Search, AlertTriangle, WifiOff, RefreshCw, Loader2 } from "lucide-react";
 import { useCamera } from "@/hooks/useCamera";
 import { useSpeech } from "@/hooks/useSpeech";
 import { useAIGuide } from "@/hooks/useAIGuide";
@@ -49,6 +49,7 @@ const GuidePage = () => {
   };
 
   const isWarning = ai.response?.isWarning ?? false;
+  const showInitialLoading = hasStarted && !ai.response && !ai.error;
 
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-background">
@@ -107,6 +108,30 @@ const GuidePage = () => {
         </div>
       </div>
 
+      {/* Initial loading state */}
+      {showInitialLoading && (
+        <div className="absolute top-16 left-0 right-0 px-4 z-10 flex justify-center">
+          <div className="hud-panel inline-flex items-center gap-2 px-4 py-2">
+            <Loader2 className="w-4 h-4 text-primary animate-spin" />
+            <span className="text-sm font-mono text-muted-foreground">AI接続中...</span>
+          </div>
+        </div>
+      )}
+
+      {/* AI error banner */}
+      {ai.error && (
+        <div className="absolute top-16 left-0 right-0 px-4 z-10 flex justify-center">
+          <div className="hud-panel inline-flex items-center gap-2 px-4 py-2 border-destructive/40">
+            <WifiOff className="w-4 h-4 text-destructive" />
+            <span className="text-sm font-mono text-destructive">{ai.error}</span>
+            {ai.isPaused && (
+              <button onClick={ai.retry} className="ml-2 p-1 rounded hover:bg-white/10">
+                <RefreshCw className="w-4 h-4 text-primary" />
+              </button>
+            )}
+          </div>
+        </div>
+      )}
       {/* Bottom controls */}
       <div className="absolute bottom-6 left-0 right-0 px-4 z-10 flex items-center justify-center gap-4">
         <button
