@@ -95,10 +95,10 @@ export function useAIGuide() {
       );
 
       if (errorCountRef.current >= MAX_CONSECUTIVE_ERRORS) {
-        setError("AI分析に接続できません。再試行中...");
+        setError("Cannot connect to AI analysis. Retrying...");
         setIsPaused(true);
       } else {
-        setError("AI分析に失敗しました");
+        setError("AI analysis failed");
       }
     } finally {
       setIsAnalyzing(false);
