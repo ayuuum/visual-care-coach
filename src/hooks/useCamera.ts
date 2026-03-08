@@ -36,7 +36,8 @@ export function useCamera() {
   const captureFrame = useCallback((): string | null => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
-    if (!video || !canvas || !isActive) return null;
+    if (!video || !canvas) return null;
+    if (video.readyState < video.HAVE_CURRENT_DATA) return null;
 
     canvas.width = 640;
     canvas.height = 480;
@@ -44,7 +45,7 @@ export function useCamera() {
     if (!ctx) return null;
     ctx.drawImage(video, 0, 0, 640, 480);
     return canvas.toDataURL("image/jpeg", 0.6);
-  }, [isActive]);
+  }, []);
 
   useEffect(() => {
     return () => {
