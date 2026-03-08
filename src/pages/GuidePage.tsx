@@ -104,6 +104,9 @@ const GuidePage = () => {
         </div>
       )}
 
+      {/* Patient info panel */}
+      {camera.isActive && <PatientInfoPanel />}
+
       {/* Top bar — scene label */}
       {camera.isActive && (
         <div className="absolute top-0 left-0 right-0 p-4 pt-[max(1rem,env(safe-area-inset-top))] z-10">
