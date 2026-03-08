@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Volume2, VolumeX, Square, Search, AlertTriangle, WifiOff, RefreshCw, Loader2 } from "lucide-react";
+import { Volume2, VolumeX, Square, Search, AlertTriangle, WifiOff, RefreshCw, Loader2, Camera } from "lucide-react";
 import { useCamera } from "@/hooks/useCamera";
 import { useSpeech } from "@/hooks/useSpeech";
 import { useAIGuide } from "@/hooks/useAIGuide";
@@ -13,11 +13,11 @@ const GuidePage = () => {
   const startTimeRef = useRef<number>(Date.now());
   const [hasStarted, setHasStarted] = useState(false);
 
-  // Start camera on mount
-  useEffect(() => {
-    camera.start();
+  // Start camera via user gesture (required for mobile Safari)
+  const handleStartCamera = async () => {
+    await camera.start();
     startTimeRef.current = Date.now();
-  }, []);
+  };
 
   // Start AI polling when camera is active
   useEffect(() => {
@@ -51,6 +51,35 @@ const GuidePage = () => {
   const isWarning = ai.response?.isWarning ?? false;
   const showInitialLoading = hasStarted && !ai.response && !ai.error;
 
+  // Pre-camera start screen
+  if (!camera.isActive && !camera.error) {
+    return (
+      <div className="h-screen w-screen flex items-center justify-center bg-background">
+        <div className="text-center px-6">
+          <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
+            <Camera className="w-10 h-10 text-primary" />
+          </div>
+          <h2 className="text-xl font-bold text-foreground mb-2">カメラを起動</h2>
+          <p className="text-sm text-muted-foreground mb-8">
+            現場をカメラで撮影し、AIがリアルタイムでガイドします
+          </p>
+          <button
+            onClick={handleStartCamera}
+            className="px-8 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-base"
+          >
+            カメラを起動する
+          </button>
+          <button
+            onClick={() => navigate("/")}
+            className="block mx-auto mt-4 text-sm text-muted-foreground"
+          >
+            戻る
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-background">
       {/* Camera feed — full screen */}
@@ -74,7 +103,7 @@ const GuidePage = () => {
       <div className="absolute top-0 left-0 right-0 p-4 z-10">
         <div className="hud-panel inline-flex items-center gap-2 px-4 py-2">
           <Search className="w-4 h-4 text-primary" />
-          <span className="text-sm font-mono text-foreground">
+          <span className="text-sm font-mono text-white/80">
             {ai.response?.scene ?? "シーンを検出中..."}
           </span>
           {ai.isAnalyzing && (
@@ -100,7 +129,7 @@ const GuidePage = () => {
           )}
           <p
             className={`text-2xl font-bold leading-snug ${
-              isWarning ? "text-warning" : "text-foreground hud-text-glow"
+              isWarning ? "text-warning" : "text-white hud-text-glow"
             }`}
           >
             {ai.response?.instruction ?? "カメラを現場に向けてください"}
@@ -113,7 +142,7 @@ const GuidePage = () => {
         <div className="absolute top-16 left-0 right-0 px-4 z-10 flex justify-center">
           <div className="hud-panel inline-flex items-center gap-2 px-4 py-2">
             <Loader2 className="w-4 h-4 text-primary animate-spin" />
-            <span className="text-sm font-mono text-muted-foreground">AI接続中...</span>
+            <span className="text-sm font-mono text-white/70">AI接続中...</span>
           </div>
         </div>
       )}
@@ -132,6 +161,7 @@ const GuidePage = () => {
           </div>
         </div>
       )}
+
       {/* Bottom controls */}
       <div className="absolute bottom-6 left-0 right-0 px-4 z-10 flex items-center justify-center gap-4">
         <button
@@ -141,7 +171,7 @@ const GuidePage = () => {
           {speech.isEnabled ? (
             <Volume2 className="w-5 h-5 text-primary" />
           ) : (
-            <VolumeX className="w-5 h-5 text-muted-foreground" />
+            <VolumeX className="w-5 h-5 text-white/40" />
           )}
         </button>
 
@@ -157,8 +187,8 @@ const GuidePage = () => {
       {camera.error && (
         <div className="absolute inset-0 flex items-center justify-center bg-background/90 z-20">
           <div className="hud-panel p-8 max-w-sm text-center">
-            <p className="text-foreground font-semibold mb-2">カメラエラー</p>
-            <p className="text-sm text-muted-foreground mb-4">{camera.error}</p>
+            <p className="text-white font-semibold mb-2">カメラエラー</p>
+            <p className="text-sm text-white/60 mb-4">{camera.error}</p>
             <button
               onClick={() => navigate("/")}
               className="px-6 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium"
