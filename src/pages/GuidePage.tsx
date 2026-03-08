@@ -49,6 +49,7 @@ const GuidePage = () => {
   };
 
   const isWarning = ai.response?.isWarning ?? false;
+  const showInitialLoading = hasStarted && !ai.response && !ai.error;
 
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-background">
