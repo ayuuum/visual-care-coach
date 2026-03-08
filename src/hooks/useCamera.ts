@@ -63,7 +63,10 @@ export function useCamera() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return null;
     ctx.drawImage(video, 0, 0, 640, 480);
-    return canvas.toDataURL("image/jpeg", 0.6);
+    const dataUrl = canvas.toDataURL("image/jpeg", 0.7);
+    // Strip data URL prefix, return pure base64
+    const base64 = dataUrl.replace(/^data:image\/\w+;base64,/, "");
+    return base64;
   }, []);
 
   useEffect(() => {

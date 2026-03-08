@@ -47,46 +47,44 @@ const GuidePage = () => {
   const isWarning = ai.response?.isWarning ?? false;
   const showInitialLoading = hasStarted && !ai.response && !ai.error;
 
-  // Pre-camera start screen
-  if (!camera.isActive && !camera.error) {
-    return (
-      <div className="h-screen w-screen flex items-center justify-center bg-background">
-        <div className="text-center px-6">
-          <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
-            <Camera className="w-10 h-10 text-primary" />
-          </div>
-          <h2 className="text-xl font-bold text-foreground mb-2">カメラを起動</h2>
-          <p className="text-sm text-muted-foreground mb-8">
-            現場をカメラで撮影し、AIがリアルタイムでガイドします
-          </p>
-          <button
-            onClick={handleStartCamera}
-            className="px-8 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-base"
-          >
-            カメラを起動する
-          </button>
-          <button
-            onClick={() => navigate("/")}
-            className="block mx-auto mt-4 text-sm text-muted-foreground"
-          >
-            戻る
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-black">
-      {/* Camera feed */}
+      {/* Camera feed - ALWAYS in DOM so ref is available */}
       <video
         ref={camera.videoRef}
-        className="absolute inset-0 w-full h-full object-cover"
+        className={`absolute inset-0 w-full h-full object-cover ${!camera.isActive ? 'hidden' : ''}`}
         autoPlay
         playsInline
         muted
       />
       <canvas ref={camera.canvasRef} className="hidden" />
+
+      {/* Pre-camera start screen */}
+      {!camera.isActive && !camera.error && (
+        <div className="absolute inset-0 flex items-center justify-center bg-background z-30">
+          <div className="text-center px-6">
+            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
+              <Camera className="w-10 h-10 text-primary" />
+            </div>
+            <h2 className="text-xl font-bold text-foreground mb-2">カメラを起動</h2>
+            <p className="text-sm text-muted-foreground mb-8">
+              現場をカメラで撮影し、AIがリアルタイムでガイドします
+            </p>
+            <button
+              onClick={handleStartCamera}
+              className="px-8 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-base"
+            >
+              カメラを起動する
+            </button>
+            <button
+              onClick={() => navigate("/")}
+              className="block mx-auto mt-4 text-sm text-muted-foreground"
+            >
+              戻る
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Top/bottom gradient for readability */}
       <div className="absolute inset-0 pointer-events-none z-[1]"
@@ -101,22 +99,24 @@ const GuidePage = () => {
       )}
 
       {/* Top bar — scene */}
-      <div className="absolute top-0 left-0 right-0 p-4 pt-[max(1rem,env(safe-area-inset-top))] z-10">
-        <div className="flex items-center justify-between">
-          <div className="hud-panel inline-flex items-center gap-2 px-3 py-1.5">
-            <Search className="w-3.5 h-3.5 text-white/60" />
-            <span className="text-sm font-mono text-white/80">
-              {ai.response?.scene ?? "検出中..."}
-            </span>
-          </div>
-          {ai.isAnalyzing && (
-            <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-              <span className="text-xs font-mono text-white/50">LIVE</span>
+      {camera.isActive && (
+        <div className="absolute top-0 left-0 right-0 p-4 pt-[max(1rem,env(safe-area-inset-top))] z-10">
+          <div className="flex items-center justify-between">
+            <div className="hud-panel inline-flex items-center gap-2 px-3 py-1.5">
+              <Search className="w-3.5 h-3.5 text-white/60" />
+              <span className="text-sm font-mono text-white/80">
+                {ai.response?.scene ?? "検出中..."}
+              </span>
             </div>
-          )}
+            {ai.isAnalyzing && (
+              <div className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                <span className="text-xs font-mono text-white/50">LIVE</span>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Initial loading */}
       {showInitialLoading && (
@@ -144,40 +144,44 @@ const GuidePage = () => {
       )}
 
       {/* Instruction panel */}
-      <div className="absolute bottom-28 left-0 right-0 px-4 z-10">
-        <div className={`hud-panel px-5 py-4 ${isWarning ? "border-warning/50" : ""}`}>
-          {isWarning && (
-            <div className="flex items-center gap-2 mb-2">
-              <AlertTriangle className="w-4 h-4 text-warning" />
-              <span className="text-xs font-mono text-warning uppercase tracking-wider">注意</span>
-            </div>
-          )}
-          <p className={`text-xl font-bold leading-snug ${isWarning ? "text-warning" : "text-white"}`}>
-            {ai.response?.instruction ?? "カメラを現場に向けてください"}
-          </p>
+      {camera.isActive && (
+        <div className="absolute bottom-28 left-0 right-0 px-4 z-10">
+          <div className={`hud-panel px-5 py-4 ${isWarning ? "border-warning/50" : ""}`}>
+            {isWarning && (
+              <div className="flex items-center gap-2 mb-2">
+                <AlertTriangle className="w-4 h-4 text-warning" />
+                <span className="text-xs font-mono text-warning uppercase tracking-wider">注意</span>
+              </div>
+            )}
+            <p className={`text-xl font-bold leading-snug ${isWarning ? "text-warning" : "text-white"}`}>
+              {ai.response?.instruction ?? "カメラを現場に向けてください"}
+            </p>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Bottom controls */}
-      <div className="absolute bottom-6 left-0 right-0 px-4 pb-[max(0.5rem,env(safe-area-inset-bottom))] z-10 flex items-center justify-center gap-4">
-        <button
-          onClick={speech.toggle}
-          className="hud-panel w-14 h-14 flex items-center justify-center"
-        >
-          {speech.isEnabled ? (
-            <Volume2 className="w-5 h-5 text-white/80" />
-          ) : (
-            <VolumeX className="w-5 h-5 text-white/40" />
-          )}
-        </button>
+      {camera.isActive && (
+        <div className="absolute bottom-6 left-0 right-0 px-4 pb-[max(0.5rem,env(safe-area-inset-bottom))] z-10 flex items-center justify-center gap-4">
+          <button
+            onClick={speech.toggle}
+            className="hud-panel w-14 h-14 flex items-center justify-center"
+          >
+            {speech.isEnabled ? (
+              <Volume2 className="w-5 h-5 text-white/80" />
+            ) : (
+              <VolumeX className="w-5 h-5 text-white/40" />
+            )}
+          </button>
 
-        <button
-          onClick={() => handleStop(false)}
-          className="hud-panel w-14 h-14 flex items-center justify-center border-destructive/40"
-        >
-          <Square className="w-5 h-5 text-destructive" />
-        </button>
-      </div>
+          <button
+            onClick={() => handleStop(false)}
+            className="hud-panel w-14 h-14 flex items-center justify-center border-destructive/40"
+          >
+            <Square className="w-5 h-5 text-destructive" />
+          </button>
+        </div>
+      )}
 
       {/* Camera error fallback */}
       {camera.error && (
