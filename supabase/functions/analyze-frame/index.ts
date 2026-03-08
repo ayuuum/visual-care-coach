@@ -46,9 +46,12 @@ serve(async (req) => {
       );
     }
 
-    // Strip data URL prefix for the image
-    const base64Data = frame.replace(/^data:image\/\w+;base64,/, "");
-    const imageUrl = `data:image/jpeg;base64,${base64Data}`;
+    // Strip data URL prefix and ensure proper base64 padding
+    const base64Data = frame.replace(/^data:image\/[^;]+;base64,/, "");
+    const paddedBase64 = base64Data + "=".repeat((4 - (base64Data.length % 4)) % 4);
+    const mimeMatch = frame.match(/^data:(image\/[^;]+);base64,/);
+    const mimeType = mimeMatch ? mimeMatch[1] : "image/jpeg";
+    const imageUrl = `data:${mimeType};base64,${paddedBase64}`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -57,7 +60,7 @@ serve(async (req) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+        model: "google/gemini-3-flash-preview",
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
           {
@@ -65,7 +68,10 @@ serve(async (req) => {
             content: [
               {
                 type: "image_url",
-                image_url: { url: imageUrl },
+                image_url: { 
+                  url: imageUrl,
+                  detail: "low"
+                },
               },
               {
                 type: "text",
