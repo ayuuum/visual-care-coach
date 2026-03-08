@@ -6,52 +6,52 @@
 
 @layer base {
   :root {
-    --background: 160 10% 8%;
-    --foreground: 0 0% 100%;
+    --background: 0 0% 99%;
+    --foreground: 163 22% 20%;
 
-    --card: 160 10% 12%;
-    --card-foreground: 0 0% 100%;
+    --card: 0 0% 100%;
+    --card-foreground: 163 22% 20%;
 
-    --popover: 160 10% 12%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 163 22% 20%;
 
     --primary: 163 22% 35%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 163 11% 49%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 163 8% 94%;
+    --secondary-foreground: 163 22% 30%;
 
-    --muted: 160 8% 16%;
-    --muted-foreground: 163 11% 49%;
+    --muted: 163 6% 94%;
+    --muted-foreground: 163 10% 50%;
 
-    --accent: 240 4% 88%;
-    --accent-foreground: 160 10% 8%;
+    --accent: 163 10% 92%;
+    --accent-foreground: 163 22% 25%;
 
     --destructive: 0 72% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --warning: 45 100% 55%;
-    --warning-foreground: 160 10% 8%;
+    --warning: 45 100% 50%;
+    --warning-foreground: 0 0% 100%;
 
     --success: 163 22% 35%;
     --success-foreground: 0 0% 100%;
 
-    --border: 163 11% 25%;
-    --input: 163 11% 25%;
+    --border: 163 8% 88%;
+    --input: 163 8% 88%;
     --ring: 163 22% 35%;
 
     --radius: 0.75rem;
 
-    --hud-bg: 160 10% 8%;
-    --hud-overlay: 160 10% 8%;
+    --hud-bg: 163 22% 15%;
+    --hud-overlay: 163 22% 10%;
 
-    --sidebar-background: 160 10% 10%;
-    --sidebar-foreground: 0 0% 100%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 163 22% 20%;
     --sidebar-primary: 163 22% 35%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 160 8% 16%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 163 11% 25%;
+    --sidebar-accent: 163 6% 94%;
+    --sidebar-accent-foreground: 163 22% 20%;
+    --sidebar-border: 163 8% 88%;
     --sidebar-ring: 163 22% 35%;
   }
 }
@@ -73,11 +73,11 @@
 
 @layer utilities {
   .hud-panel {
-    @apply bg-background/70 backdrop-blur-xl border border-primary/20 rounded-xl;
+    @apply bg-black/60 backdrop-blur-xl border border-white/10 rounded-xl;
   }
 
   .hud-text-glow {
-    text-shadow: 0 0 20px hsl(163 22% 35% / 0.5), 0 0 40px hsl(163 22% 35% / 0.15);
+    text-shadow: 0 0 20px rgba(255,255,255,0.3), 0 0 40px rgba(255,255,255,0.1);
   }
 
   .pulse-ring {
