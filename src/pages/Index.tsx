@@ -17,7 +17,7 @@ const Index = () => {
           <div className="w-20 h-20 rounded-3xl bg-primary/10 border-2 border-primary/20 flex items-center justify-center mb-5 pulse-ring">
             <Glasses className="w-10 h-10 text-primary" />
           </div>
-          <h1 className="text-4xl font-bold tracking-tight text-foreground mb-1">
+          <h1 className="text-5xl font-bold tracking-tight text-foreground mb-1">
             CareGlass
           </h1>
           <p className="text-xs text-muted-foreground font-mono tracking-[0.25em] uppercase">
@@ -26,7 +26,7 @@ const Index = () => {
         </div>
 
         {/* Tagline */}
-        <p className="text-center text-muted-foreground mb-10 leading-relaxed text-base">
+        <p className="text-center text-muted-foreground mb-10 leading-relaxed text-lg">
           ARグラス対応のリアルタイム介護AIアシスタント。
           <br />
           カメラ映像からAIが介助場面を自動認識し、
@@ -48,8 +48,8 @@ const Index = () => {
               <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                 <Icon className="w-5 h-5 text-primary" />
               </div>
-              <span className="text-sm font-semibold text-foreground">{label}</span>
-              <span className="text-[10px] text-muted-foreground text-center leading-tight">{desc}</span>
+              <span className="text-base font-semibold text-foreground">{label}</span>
+              <span className="text-xs text-muted-foreground text-center leading-tight">{desc}</span>
             </div>
           ))}
         </div>
@@ -57,13 +57,13 @@ const Index = () => {
         {/* Start button */}
         <button
           onClick={() => navigate("/guide")}
-          className="w-full py-4 rounded-2xl bg-primary text-primary-foreground font-bold text-lg tracking-wide hover:brightness-110 transition-all active:scale-[0.97] flex items-center justify-center gap-2"
+          className="w-full py-5 rounded-2xl bg-primary text-primary-foreground font-bold text-xl tracking-wide hover:brightness-110 transition-all active:scale-[0.97] flex items-center justify-center gap-2"
         >
           ガイドを開始する
           <ArrowRight className="w-5 h-5" />
         </button>
 
-        <p className="mt-5 text-xs text-muted-foreground text-center">
+        <p className="mt-5 text-sm text-muted-foreground text-center">
           ※ MVPではスマートフォンカメラを使用します
         </p>
       </div>

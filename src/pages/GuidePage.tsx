@@ -95,21 +95,21 @@ const GuidePage = () => {
             <div className="w-24 h-24 rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center mx-auto mb-8 pulse-ring">
               <Camera className="w-12 h-12 text-primary" />
             </div>
-            <h2 className="text-2xl font-bold text-foreground mb-3">ガイドを開始</h2>
-            <p className="text-base text-muted-foreground mb-10 leading-relaxed">
+            <h2 className="text-3xl font-bold text-foreground mb-3">ガイドを開始</h2>
+            <p className="text-lg text-muted-foreground mb-10 leading-relaxed">
               カメラまたはデモ画像で<br />AIガイドを体験できます
             </p>
             <div className="flex flex-col gap-4">
               <button
                 onClick={handleStartCamera}
-                className="px-8 py-4 rounded-2xl bg-primary text-primary-foreground font-bold text-lg flex items-center justify-center gap-3 hover:brightness-110 transition-all active:scale-[0.97]"
+                className="px-8 py-5 rounded-2xl bg-primary text-primary-foreground font-bold text-xl flex items-center justify-center gap-3 hover:brightness-110 transition-all active:scale-[0.97]"
               >
                 <Camera className="w-5 h-5" />
                 カメラを起動する
               </button>
               <button
                 onClick={handleStartDemo}
-                className="px-8 py-4 rounded-2xl bg-secondary text-secondary-foreground font-bold text-lg flex items-center justify-center gap-3 border border-border hover:bg-accent transition-all active:scale-[0.97]"
+                className="px-8 py-5 rounded-2xl bg-secondary text-secondary-foreground font-bold text-xl flex items-center justify-center gap-3 border border-border hover:bg-accent transition-all active:scale-[0.97]"
               >
                 <Play className="w-5 h-5" />
                 デモモードで体験
@@ -156,7 +156,7 @@ const GuidePage = () => {
               </div>
               <div>
                 <p className="text-[10px] font-mono text-white/40 uppercase tracking-widest">Scene</p>
-                <p className="text-base font-bold text-white">
+                <p className="text-lg font-bold text-white">
                   {ai.response?.scene ?? "検出中..."}
                 </p>
               </div>
@@ -179,7 +179,7 @@ const GuidePage = () => {
               <Loader2 className="w-8 h-8 text-white animate-spin" />
             </div>
             <div className="text-center">
-              <p className="text-lg font-bold text-white mb-1">AI分析を開始中</p>
+              <p className="text-xl font-bold text-white mb-1">AI分析を開始中</p>
               <p className="text-sm text-white/50 font-mono">接続中...</p>
             </div>
           </div>
@@ -223,7 +223,7 @@ const GuidePage = () => {
               }`}>
                 <Activity className={`w-5 h-5 ${isWarning ? "text-amber-300" : "text-primary"}`} />
               </div>
-              <p className={`text-xl font-bold leading-relaxed ${
+              <p className={`text-2xl font-bold leading-relaxed ${
                 isWarning ? "text-amber-100" : "text-white"
               }`}>
                 {ai.response?.instruction ?? "カメラを現場に向けてください"}
@@ -238,20 +238,20 @@ const GuidePage = () => {
         <div className="absolute bottom-6 left-0 right-0 px-4 pb-[max(0.5rem,env(safe-area-inset-bottom))] z-10 flex items-center justify-center gap-4">
           <button
             onClick={speech.toggle}
-            className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all active:scale-95"
+            className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all active:scale-95"
           >
             {speech.isEnabled ? (
-              <Volume2 className="w-5 h-5 text-white" />
+              <Volume2 className="w-6 h-6 text-white" />
             ) : (
-              <VolumeX className="w-5 h-5 text-white/40" />
+              <VolumeX className="w-6 h-6 text-white/40" />
             )}
           </button>
 
           <button
             onClick={() => handleStop(false)}
-            className="w-14 h-14 rounded-2xl bg-red-500/20 backdrop-blur-xl border border-red-400/30 flex items-center justify-center hover:bg-red-500/30 transition-all active:scale-95"
+            className="w-16 h-16 rounded-2xl bg-red-500/20 backdrop-blur-xl border border-red-400/30 flex items-center justify-center hover:bg-red-500/30 transition-all active:scale-95"
           >
-            <Square className="w-5 h-5 text-red-300" />
+            <Square className="w-6 h-6 text-red-300" />
           </button>
         </div>
       )}
