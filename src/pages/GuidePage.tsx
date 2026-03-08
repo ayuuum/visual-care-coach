@@ -4,6 +4,7 @@ import { Volume2, VolumeX, Square, AlertTriangle, WifiOff, RefreshCw, Loader2, C
 import { useCamera } from "@/hooks/useCamera";
 import { useSpeech } from "@/hooks/useSpeech";
 import { useAIGuide } from "@/hooks/useAIGuide";
+import PatientInfoPanel from "@/components/PatientInfoPanel";
 
 const GuidePage = () => {
   const navigate = useNavigate();
