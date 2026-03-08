@@ -95,8 +95,8 @@ const GuidePage = () => {
             <div className="w-24 h-24 rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center mx-auto mb-8 pulse-ring">
               <Camera className="w-12 h-12 text-primary" />
             </div>
-            <h2 className="text-2xl font-bold text-foreground mb-3">ガイドを開始</h2>
-            <p className="text-base text-muted-foreground mb-10 leading-relaxed">
+            <h2 className="text-3xl font-bold text-foreground mb-3">ガイドを開始</h2>
+            <p className="text-lg text-muted-foreground mb-10 leading-relaxed">
               カメラまたはデモ画像で<br />AIガイドを体験できます
             </p>
             <div className="flex flex-col gap-4">
