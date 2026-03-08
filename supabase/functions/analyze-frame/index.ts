@@ -46,12 +46,8 @@ serve(async (req) => {
       );
     }
 
-    // Strip data URL prefix and ensure proper base64 padding
-    const base64Data = frame.replace(/^data:image\/[^;]+;base64,/, "");
-    const paddedBase64 = base64Data + "=".repeat((4 - (base64Data.length % 4)) % 4);
-    const mimeMatch = frame.match(/^data:(image\/[^;]+);base64,/);
-    const mimeType = mimeMatch ? mimeMatch[1] : "image/jpeg";
-    const imageUrl = `data:${mimeType};base64,${paddedBase64}`;
+    // Use data URL as-is (canvas.toDataURL() produces valid base64)
+    const imageUrl = frame.startsWith("data:") ? frame : `data:image/jpeg;base64,${frame}`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
