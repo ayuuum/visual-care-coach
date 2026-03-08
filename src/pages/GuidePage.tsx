@@ -179,6 +179,20 @@ const GuidePage = () => {
                 <span className="text-xs font-bold text-amber-300 uppercase tracking-widest">⚠ Warning</span>
               </div>
             )}
+            {/* Illustration */}
+            {(ai.isGeneratingImage || ai.response?.illustrationUrl) && (
+              <div className="px-5 pt-4">
+                {ai.isGeneratingImage && !ai.response?.illustrationUrl ? (
+                  <Skeleton className="w-full h-32 rounded-xl bg-white/10" />
+                ) : ai.response?.illustrationUrl ? (
+                  <img
+                    src={ai.response.illustrationUrl}
+                    alt="ケア手順イラスト"
+                    className="w-full h-32 object-contain rounded-xl bg-white/5"
+                  />
+                ) : null}
+              </div>
+            )}
             <div className="px-5 py-4 flex items-start gap-3">
               <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 ${
                 isWarning ? "bg-amber-400/20" : "bg-white/10"

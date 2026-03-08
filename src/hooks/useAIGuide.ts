@@ -150,5 +150,5 @@ export function useAIGuide() {
     };
   }, []);
 
-  return { response, isAnalyzing, error, isPaused, startPolling, stopPolling, analyzeFrame, retry };
+  return { response, isAnalyzing, error, isPaused, isGeneratingImage, startPolling, stopPolling, analyzeFrame, retry };
 }
