@@ -17,7 +17,7 @@ const Index = () => {
           <div className="w-20 h-20 rounded-3xl bg-primary/10 border-2 border-primary/20 flex items-center justify-center mb-5 pulse-ring">
             <Glasses className="w-10 h-10 text-primary" />
           </div>
-          <h1 className="text-4xl font-bold tracking-tight text-foreground mb-1">
+          <h1 className="text-5xl font-bold tracking-tight text-foreground mb-1">
             CareGlass
           </h1>
           <p className="text-xs text-muted-foreground font-mono tracking-[0.25em] uppercase">
