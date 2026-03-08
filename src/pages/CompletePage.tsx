@@ -20,7 +20,7 @@ const CompletePage = () => {
           <CheckCircle className="w-12 h-12 text-primary" />
         </div>
 
-        <h1 className="text-3xl font-bold text-foreground mb-2">
+        <h1 className="text-4xl font-bold text-foreground mb-2">
           {completed ? "ガイド完了" : "お疲れ様でした"}
         </h1>
 
