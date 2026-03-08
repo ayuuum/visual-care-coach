@@ -26,7 +26,7 @@ const Index = () => {
         </div>
 
         {/* Tagline */}
-        <p className="text-center text-muted-foreground mb-10 leading-relaxed text-base">
+        <p className="text-center text-muted-foreground mb-10 leading-relaxed text-lg">
           ARグラス対応のリアルタイム介護AIアシスタント。
           <br />
           カメラ映像からAIが介助場面を自動認識し、
