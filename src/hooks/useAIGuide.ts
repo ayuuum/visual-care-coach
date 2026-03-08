@@ -75,18 +75,27 @@ export function useAIGuide() {
       if (intervalRef.current) return;
       captureFrameRef.current = captureFrame;
 
+      let attempts = 0;
       const tryCapture = () => {
         const frame = captureFrame();
         if (frame) {
           analyzeFrame(frame);
-        } else {
-          // Video not ready — retry quickly
-          intervalRef.current = setTimeout(tryCapture, 500);
+          return;
         }
+
+        attempts += 1;
+        if (attempts >= 20) {
+          setError("カメラ映像が取得できません。再起動してください");
+          setIsPaused(true);
+          return;
+        }
+
+        // Video not ready — retry quickly
+        intervalRef.current = setTimeout(tryCapture, 500);
       };
       tryCapture();
     },
-    [analyzeFrame]
+    [analyzeFrame, setError, setIsPaused]
   );
 
   const stopPolling = useCallback(() => {
