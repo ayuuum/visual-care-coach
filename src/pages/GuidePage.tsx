@@ -156,7 +156,7 @@ const GuidePage = () => {
               </div>
               <div>
                 <p className="text-[10px] font-mono text-white/40 uppercase tracking-widest">Scene</p>
-                <p className="text-base font-bold text-white">
+                <p className="text-lg font-bold text-white">
                   {ai.response?.scene ?? "検出中..."}
                 </p>
               </div>
