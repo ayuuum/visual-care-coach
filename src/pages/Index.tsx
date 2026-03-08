@@ -48,8 +48,8 @@ const Index = () => {
               <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                 <Icon className="w-5 h-5 text-primary" />
               </div>
-              <span className="text-sm font-semibold text-foreground">{label}</span>
-              <span className="text-[10px] text-muted-foreground text-center leading-tight">{desc}</span>
+              <span className="text-base font-semibold text-foreground">{label}</span>
+              <span className="text-xs text-muted-foreground text-center leading-tight">{desc}</span>
             </div>
           ))}
         </div>
