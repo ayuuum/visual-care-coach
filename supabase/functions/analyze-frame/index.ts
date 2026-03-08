@@ -6,28 +6,28 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const SYSTEM_PROMPT = `あなたは介護現場のリアルタイムコーチ「CareGlass」です。
-ARグラスを通してカメラ画像を見て、画像に写っているものを詳しく認識・説明してください。
+const SYSTEM_PROMPT = `You are "CareGlass", a real-time coaching assistant for caregiving scenes.
+You observe camera images through AR glasses and provide detailed recognition and descriptions of what is shown.
 
-## 画像認識の優先事項
-1. まず画像に何が写っているかを正確に認識してください（人、物、場所、行動など）
-2. 人が写っている場合は、人数、姿勢、表情、動作を観察してください
-3. 介護に関連するシーンであれば、介助の種類を判別してください
-4. 顔が写っている場合は、表情や状態（笑顔、苦痛、眠そう、無表情など）を報告してください
+## Image Recognition Priorities
+1. First, accurately identify what is in the image (people, objects, locations, actions, etc.)
+2. If people are present, observe the number of people, posture, facial expressions, and actions
+3. If the scene is care-related, identify the type of assistance being provided
+4. If faces are visible, report expressions and states (smiling, in pain, drowsy, neutral, etc.)
 
-対応する介助：移乗、食事、排泄、入浴、体位変換、口腔ケア、着替え、歩行介助など。
+Supported care types: transfers, meal assistance, toileting, bathing, repositioning, oral care, dressing, walking assistance, etc.
 
-## ルール
-- scene: 画像から認識した状況を簡潔に記載（例：「食事介助」「笑顔の高齢者」「車椅子移乗」「室内風景」）
-- instruction: 次のアドバイスや観察結果を30字以内で記載
-- 安全に関わる場合は isWarning を true
-- 介助が正しく完了した場合は isComplete を true
-- 何も判別できない場合は scene を「不明」、instruction を「カメラを現場に向けてください」
+## Rules
+- scene: Briefly describe the recognized situation (e.g. "Meal Assistance", "Smiling Elderly Person", "Wheelchair Transfer", "Indoor Scene")
+- instruction: Next advice or observation in 50 characters or fewer
+- Set isWarning to true if safety is a concern
+- Set isComplete to true if care assistance has been correctly completed
+- If nothing can be identified, set scene to "Unknown" and instruction to "Point the camera at the care scene"
 
-必ず以下のJSON形式のみで返答してください（それ以外のテキストは不要）：
+Always respond ONLY in the following JSON format (no other text):
 {
-  "scene": "認識した状況",
-  "instruction": "アドバイスまたは観察結果（30字以内）",
+  "scene": "Recognized situation",
+  "instruction": "Advice or observation (50 chars or fewer)",
   "isWarning": false,
   "isComplete": false
 }`;
@@ -54,7 +54,6 @@ serve(async (req) => {
       );
     }
 
-    // Extract pure base64 data (remove data URL prefix if present)
     let base64Data = frame;
     if (frame.startsWith("data:")) {
       const match = frame.match(/^data:image\/\w+;base64,(.+)$/);
@@ -63,10 +62,9 @@ serve(async (req) => {
       }
     }
 
-    // Validate base64 data has minimum length
     if (base64Data.length < 100) {
       console.error("Base64 data too short:", base64Data.length);
-      return new Response(JSON.stringify({ error: "画像データが不正です" }), {
+      return new Response(JSON.stringify({ error: "Invalid image data" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -87,13 +85,13 @@ serve(async (req) => {
             content: [
               {
                 type: "image_url",
-                image_url: { 
+                image_url: {
                   url: `data:image/jpeg;base64,${base64Data}`,
                 },
               },
               {
                 type: "text",
-                text: "この画像の介助状況を分析してください。",
+                text: "Analyze the care situation in this image.",
               },
             ],
           },
@@ -103,20 +101,20 @@ serve(async (req) => {
 
     if (!response.ok) {
       if (response.status === 429) {
-        return new Response(JSON.stringify({ error: "レート制限に達しました。少し待ってから再試行してください。" }), {
+        return new Response(JSON.stringify({ error: "Rate limit reached. Please wait and try again." }), {
           status: 429,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
       if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "クレジットが不足しています。" }), {
+        return new Response(JSON.stringify({ error: "Insufficient credits." }), {
           status: 402,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
       const errorText = await response.text();
       console.error("AI gateway error:", response.status, errorText);
-      return new Response(JSON.stringify({ error: "AI分析に失敗しました" }), {
+      return new Response(JSON.stringify({ error: "AI analysis failed" }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -125,7 +123,6 @@ serve(async (req) => {
     const data = await response.json();
     const text = data?.choices?.[0]?.message?.content ?? "";
 
-    // Parse JSON from response
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       const parsed = JSON.parse(jsonMatch[0]);
@@ -134,11 +131,10 @@ serve(async (req) => {
       });
     }
 
-    // Fallback
     return new Response(
       JSON.stringify({
-        scene: "不明",
-        instruction: "カメラを現場に向けてください",
+        scene: "Unknown",
+        instruction: "Point the camera at the care scene",
         isWarning: false,
         isComplete: false,
       }),
@@ -148,8 +144,8 @@ serve(async (req) => {
     console.error("Error:", err);
     return new Response(
       JSON.stringify({
-        scene: "エラー",
-        instruction: "再試行してください",
+        scene: "Error",
+        instruction: "Please try again",
         isWarning: false,
         isComplete: false,
       }),
