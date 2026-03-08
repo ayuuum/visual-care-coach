@@ -18,6 +18,27 @@ export function useAIGuide() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isPaused, setIsPaused] = useState(false);
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false);
+  const lastImageInstructionRef = useRef<string>("");
+
+  const generateIllustration = useCallback(async (instruction: string, scene: string) => {
+    if (lastImageInstructionRef.current === instruction) return;
+    lastImageInstructionRef.current = instruction;
+    setIsGeneratingImage(true);
+    try {
+      const { data, error: fnError } = await supabase.functions.invoke("generate-instruction-image", {
+        body: { instruction, scene },
+      });
+      if (fnError) throw fnError;
+      if (data?.imageUrl) {
+        setResponse(prev => prev ? { ...prev, illustrationUrl: data.imageUrl } : prev);
+      }
+    } catch (err) {
+      console.error("Illustration generation error:", err);
+    } finally {
+      setIsGeneratingImage(false);
+    }
+  }, []);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isRunningRef = useRef(false);
   const errorCountRef = useRef(0);
