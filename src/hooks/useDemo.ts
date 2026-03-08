@@ -4,12 +4,10 @@ import demoMeal from "@/assets/demo/demo-meal.jpg";
 import demoFace from "@/assets/demo/demo-face.jpg";
 
 const DEMO_IMAGES = [demoTransfer, demoMeal, demoFace];
-const CYCLE_INTERVAL = 6000; // switch image every 6s
 
 export function useDemo() {
   const [isActive, setIsActive] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const base64CacheRef = useRef<Map<string, string>>(new Map());
   const currentIndexRef = useRef(0);
 
@@ -37,29 +35,24 @@ export function useDemo() {
   }, []);
 
   const captureFrame = useCallback((): string | null => {
-    // Return cached base64 synchronously; preload ensures it's ready
     const src = DEMO_IMAGES[currentIndexRef.current];
     return base64CacheRef.current.get(src) ?? null;
   }, []);
 
+  // Advance to next image - call this after AI response arrives
+  const next = useCallback(() => {
+    currentIndexRef.current = (currentIndexRef.current + 1) % DEMO_IMAGES.length;
+    setCurrentIndex(currentIndexRef.current);
+  }, []);
+
   const start = useCallback(async () => {
-    // Preload all images
     await Promise.all(DEMO_IMAGES.map((src) => loadImageAsBase64(src)));
     currentIndexRef.current = 0;
     setCurrentIndex(0);
     setIsActive(true);
-
-    intervalRef.current = setInterval(() => {
-      currentIndexRef.current = (currentIndexRef.current + 1) % DEMO_IMAGES.length;
-      setCurrentIndex(currentIndexRef.current);
-    }, CYCLE_INTERVAL);
   }, [loadImageAsBase64]);
 
   const stop = useCallback(() => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
     setIsActive(false);
   }, []);
 
@@ -69,5 +62,6 @@ export function useDemo() {
     captureFrame,
     start,
     stop,
+    next,
   };
 }
