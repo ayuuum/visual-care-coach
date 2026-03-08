@@ -53,7 +53,7 @@ const CompletePage = () => {
           </button>
           <button
             onClick={() => navigate("/")}
-            className="py-4 px-6 rounded-2xl border-2 border-border text-foreground font-semibold flex items-center justify-center gap-2 hover:bg-secondary transition-all active:scale-[0.97]"
+            className="py-5 px-6 rounded-2xl border-2 border-border text-foreground font-semibold flex items-center justify-center gap-2 hover:bg-secondary transition-all active:scale-[0.97]"
           >
             <Home className="w-5 h-5" />
           </button>

@@ -63,7 +63,7 @@ const Index = () => {
           <ArrowRight className="w-5 h-5" />
         </button>
 
-        <p className="mt-5 text-xs text-muted-foreground text-center">
+        <p className="mt-5 text-sm text-muted-foreground text-center">
           ※ MVPではスマートフォンカメラを使用します
         </p>
       </div>

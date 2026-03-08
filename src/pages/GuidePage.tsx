@@ -249,9 +249,9 @@ const GuidePage = () => {
 
           <button
             onClick={() => handleStop(false)}
-            className="w-14 h-14 rounded-2xl bg-red-500/20 backdrop-blur-xl border border-red-400/30 flex items-center justify-center hover:bg-red-500/30 transition-all active:scale-95"
+            className="w-16 h-16 rounded-2xl bg-red-500/20 backdrop-blur-xl border border-red-400/30 flex items-center justify-center hover:bg-red-500/30 transition-all active:scale-95"
           >
-            <Square className="w-5 h-5 text-red-300" />
+            <Square className="w-6 h-6 text-red-300" />
           </button>
         </div>
       )}
