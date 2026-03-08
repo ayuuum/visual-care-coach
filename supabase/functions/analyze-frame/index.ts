@@ -48,15 +48,21 @@ serve(async (req) => {
 
     // Extract pure base64 data (remove data URL prefix if present)
     let base64Data = frame;
-    let mimeType = "image/jpeg";
     if (frame.startsWith("data:")) {
-      const match = frame.match(/^data:(image\/\w+);base64,(.+)$/);
+      const match = frame.match(/^data:image\/\w+;base64,(.+)$/);
       if (match) {
-        mimeType = match[1];
-        base64Data = match[2];
+        base64Data = match[1];
       }
     }
-    const imageUrl = `data:${mimeType};base64,${base64Data}`;
+
+    // Validate base64 data has minimum length
+    if (base64Data.length < 100) {
+      console.error("Base64 data too short:", base64Data.length);
+      return new Response(JSON.stringify({ error: "画像データが不正です" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -74,7 +80,7 @@ serve(async (req) => {
               {
                 type: "image_url",
                 image_url: { 
-                  url: imageUrl,
+                  url: `data:image/jpeg;base64,${base64Data}`,
                 },
               },
               {
