@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { CheckCircle, RotateCcw, Home } from "lucide-react";
+import { CheckCircle, RotateCcw, Home, Clock } from "lucide-react";
 
 const CompletePage = () => {
   const navigate = useNavigate();
@@ -11,44 +11,51 @@ const CompletePage = () => {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background px-6 relative overflow-hidden">
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-96 h-96 bg-primary/20 rounded-full blur-3xl" />
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-primary/10 rounded-full blur-[100px]" />
       </div>
 
-      <div className="relative z-10 flex flex-col items-center max-w-sm w-full">
-        <div className="w-20 h-20 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center mb-6 pulse-ring">
-          <CheckCircle className="w-10 h-10 text-primary" />
+      <div className="relative z-10 flex flex-col items-center max-w-sm w-full animate-fade-in">
+        <div className="w-24 h-24 rounded-full bg-primary/15 border-2 border-primary/30 flex items-center justify-center mb-8 pulse-ring">
+          <CheckCircle className="w-12 h-12 text-primary" />
         </div>
 
-        <h1 className="text-2xl font-bold text-foreground mb-2">
-          {completed ? "ガイドが完了しました" : "ガイドを終了しました"}
+        <h1 className="text-3xl font-bold text-foreground mb-2">
+          {completed ? "ガイド完了" : "お疲れ様でした"}
         </h1>
 
-        <p className="text-muted-foreground mb-8">お疲れ様でした</p>
+        <p className="text-base text-muted-foreground mb-10">
+          {completed ? "介助が正しく完了しました" : "ガイドを終了しました"}
+        </p>
 
-        {/* Timer */}
-        <div className="px-8 py-4 mb-10 text-center rounded-xl bg-secondary border border-border">
-          <p className="text-xs text-muted-foreground font-mono uppercase tracking-wider mb-1">
-            所要時間
-          </p>
-          <p className="text-3xl font-bold font-mono text-foreground">
-            {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
+        {/* Timer card */}
+        <div className="w-full px-8 py-6 mb-10 text-center rounded-2xl bg-secondary border border-border">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <Clock className="w-4 h-4 text-muted-foreground" />
+            <p className="text-xs text-muted-foreground font-mono uppercase tracking-widest">
+              所要時間
+            </p>
+          </div>
+          <p className="text-5xl font-bold font-mono text-foreground">
+            {String(minutes).padStart(2, "0")}
+            <span className="text-primary mx-1">:</span>
+            {String(seconds).padStart(2, "0")}
           </p>
         </div>
 
         <div className="flex gap-3 w-full">
           <button
             onClick={() => navigate("/guide")}
-            className="flex-1 py-3 rounded-xl bg-primary text-primary-foreground font-semibold flex items-center justify-center gap-2 hover:brightness-110 transition-all"
+            className="flex-1 py-4 rounded-2xl bg-primary text-primary-foreground font-bold text-base flex items-center justify-center gap-2 hover:brightness-110 transition-all active:scale-[0.97]"
           >
-            <RotateCcw className="w-4 h-4" />
+            <RotateCcw className="w-5 h-5" />
             もう一度
           </button>
           <button
             onClick={() => navigate("/")}
-            className="py-3 px-5 rounded-xl border border-border text-foreground font-medium flex items-center justify-center gap-2 hover:bg-secondary transition-all"
+            className="py-4 px-6 rounded-2xl border-2 border-border text-foreground font-semibold flex items-center justify-center gap-2 hover:bg-secondary transition-all active:scale-[0.97]"
           >
-            <Home className="w-4 h-4" />
+            <Home className="w-5 h-5" />
           </button>
         </div>
       </div>
