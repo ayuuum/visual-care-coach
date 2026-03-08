@@ -24,7 +24,7 @@ const CompletePage = () => {
           {completed ? "ガイド完了" : "お疲れ様でした"}
         </h1>
 
-        <p className="text-base text-muted-foreground mb-10">
+        <p className="text-lg text-muted-foreground mb-10">
           {completed ? "介助が正しく完了しました" : "ガイドを終了しました"}
         </p>
 
