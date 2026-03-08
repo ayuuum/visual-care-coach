@@ -36,7 +36,7 @@ const CompletePage = () => {
               所要時間
             </p>
           </div>
-          <p className="text-5xl font-bold font-mono text-foreground">
+          <p className="text-6xl font-bold font-mono text-foreground">
             {String(minutes).padStart(2, "0")}
             <span className="text-primary mx-1">:</span>
             {String(seconds).padStart(2, "0")}
