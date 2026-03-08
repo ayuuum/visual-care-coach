@@ -10,8 +10,8 @@ export function useSpeech() {
       if (!isEnabled || !text || text === lastSpoken.current) return;
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = "en-US";
-      utterance.rate = 1.1;
+      utterance.lang = "ja-JP";
+      utterance.rate = 1.0;
       utterance.pitch = 1.0;
       utterance.onstart = () => setIsSpeaking(true);
       utterance.onend = () => setIsSpeaking(false);
