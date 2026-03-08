@@ -5,21 +5,15 @@ const Index = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-6 relative overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-accent/10 rounded-full blur-3xl" />
-      </div>
-
-      <div className="relative z-10 flex flex-col items-center max-w-md w-full">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-6">
+      <div className="flex flex-col items-center max-w-md w-full">
         {/* Logo */}
         <div className="mb-8 flex items-center gap-3">
-          <div className="w-14 h-14 rounded-2xl bg-primary/15 border border-primary/30 flex items-center justify-center pulse-ring">
+          <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center">
             <Glasses className="w-7 h-7 text-primary" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-foreground hud-text-glow">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground">
               CareGlass
             </h1>
             <p className="text-xs text-muted-foreground font-mono tracking-widest uppercase">
@@ -46,7 +40,7 @@ const Index = () => {
           ].map(({ icon: Icon, label }) => (
             <div
               key={label}
-              className="hud-panel flex flex-col items-center gap-2 py-4 px-2"
+              className="flex flex-col items-center gap-2 py-4 px-2 rounded-xl bg-secondary border border-border"
             >
               <Icon className="w-5 h-5 text-primary" />
               <span className="text-xs text-muted-foreground">{label}</span>
