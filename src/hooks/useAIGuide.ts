@@ -6,6 +6,7 @@ export interface AIResponse {
   instruction: string;
   isWarning: boolean;
   isComplete: boolean;
+  illustrationUrl?: string;
 }
 
 const BASE_INTERVAL = 3000;
