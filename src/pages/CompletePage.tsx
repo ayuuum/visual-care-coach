@@ -21,11 +21,11 @@ const CompletePage = () => {
         </div>
 
         <h1 className="text-4xl font-bold text-foreground mb-2">
-          {completed ? "ガイド完了" : "お疲れ様でした"}
+          {completed ? "Guide Complete" : "Great Work"}
         </h1>
 
         <p className="text-lg text-muted-foreground mb-10">
-          {completed ? "介助が正しく完了しました" : "ガイドを終了しました"}
+          {completed ? "Care assistance completed correctly" : "Guide session ended"}
         </p>
 
         {/* Timer card */}
@@ -33,7 +33,7 @@ const CompletePage = () => {
           <div className="flex items-center justify-center gap-2 mb-2">
             <Clock className="w-4 h-4 text-muted-foreground" />
             <p className="text-sm text-muted-foreground font-mono uppercase tracking-widest">
-              所要時間
+              Duration
             </p>
           </div>
           <p className="text-6xl font-bold font-mono text-foreground">
@@ -49,7 +49,7 @@ const CompletePage = () => {
             className="flex-1 py-5 rounded-2xl bg-primary text-primary-foreground font-bold text-lg flex items-center justify-center gap-2 hover:brightness-110 transition-all active:scale-[0.97]"
           >
             <RotateCcw className="w-5 h-5" />
-            もう一度
+            Try Again
           </button>
           <button
             onClick={() => navigate("/")}

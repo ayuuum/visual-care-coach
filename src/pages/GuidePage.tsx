@@ -54,7 +54,6 @@ const GuidePage = () => {
 
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-black">
-      {/* Camera feed */}
       <video
         ref={camera.videoRef}
         className={`absolute inset-0 w-full h-full object-cover ${!camera.isActive ? 'hidden' : ''}`}
@@ -71,22 +70,22 @@ const GuidePage = () => {
             <div className="w-24 h-24 rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center mx-auto mb-8 pulse-ring">
               <Camera className="w-12 h-12 text-primary" />
             </div>
-            <h2 className="text-3xl font-bold text-foreground mb-3">ガイドを開始</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-3">Start Guide</h2>
             <p className="text-lg text-muted-foreground mb-10 leading-relaxed">
-              カメラを起動して<br />AIガイドを体験できます
+              Start the camera to<br />experience the AI guide
             </p>
             <button
               onClick={handleStartCamera}
               className="w-full px-8 py-5 rounded-2xl bg-primary text-primary-foreground font-bold text-xl flex items-center justify-center gap-3 hover:brightness-110 transition-all active:scale-[0.97]"
             >
               <Camera className="w-6 h-6" />
-              カメラを起動する
+              Start Camera
             </button>
             <button
               onClick={() => navigate("/")}
               className="block mx-auto mt-6 text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
-              ← 戻る
+              ← Back
             </button>
           </div>
         </div>
@@ -115,7 +114,7 @@ const GuidePage = () => {
               <div>
                 <p className="text-[10px] font-mono text-white/40 uppercase tracking-widest">Scene</p>
                 <p className="text-lg font-bold text-white">
-                  {ai.response?.scene ?? "検出中..."}
+                  {ai.response?.scene ?? "Scanning..."}
                 </p>
               </div>
             </div>
@@ -137,8 +136,8 @@ const GuidePage = () => {
               <Loader2 className="w-8 h-8 text-white animate-spin" />
             </div>
             <div className="text-center">
-              <p className="text-xl font-bold text-white mb-1">AI分析を開始中</p>
-              <p className="text-sm text-white/50 font-mono">接続中...</p>
+              <p className="text-xl font-bold text-white mb-1">Starting AI Analysis</p>
+              <p className="text-sm text-white/50 font-mono">Connecting...</p>
             </div>
           </div>
         </div>
@@ -159,7 +158,7 @@ const GuidePage = () => {
         </div>
       )}
 
-      {/* Instruction panel — the main focus area */}
+      {/* Instruction panel */}
       {camera.isActive && (
         <div className="absolute bottom-28 left-0 right-0 px-4 z-10">
           <div
@@ -172,7 +171,7 @@ const GuidePage = () => {
             {isWarning && (
               <div className="flex items-center gap-2 px-5 pt-4 pb-1">
                 <AlertTriangle className="w-5 h-5 text-amber-300" />
-                <span className="text-xs font-bold text-amber-300 uppercase tracking-widest">⚠ 注意</span>
+                <span className="text-xs font-bold text-amber-300 uppercase tracking-widest">⚠ Warning</span>
               </div>
             )}
             <div className="px-5 py-4 flex items-start gap-3">
@@ -184,7 +183,7 @@ const GuidePage = () => {
               <p className={`text-2xl font-bold leading-relaxed ${
                 isWarning ? "text-amber-100" : "text-white"
               }`}>
-                {ai.response?.instruction ?? "カメラを現場に向けてください"}
+                {ai.response?.instruction ?? "Point the camera at the care scene"}
               </p>
             </div>
           </div>
@@ -221,13 +220,13 @@ const GuidePage = () => {
             <div className="w-16 h-16 rounded-full bg-red-500/20 border border-red-400/30 flex items-center justify-center mx-auto mb-4">
               <Camera className="w-8 h-8 text-red-300" />
             </div>
-            <p className="text-white font-bold text-lg mb-2">カメラエラー</p>
+            <p className="text-white font-bold text-lg mb-2">Camera Error</p>
             <p className="text-sm text-white/50 mb-6">{camera.error}</p>
             <button
               onClick={() => navigate("/")}
               className="px-8 py-3 rounded-xl bg-primary text-primary-foreground font-semibold"
             >
-              戻る
+              Go Back
             </button>
           </div>
         </div>

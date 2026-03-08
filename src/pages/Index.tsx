@@ -6,13 +6,11 @@ const Index = () => {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background px-6 relative overflow-hidden">
-      {/* Subtle background glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-primary/8 rounded-full blur-[120px]" />
       </div>
 
       <div className="relative z-10 flex flex-col items-center max-w-md w-full animate-fade-in">
-        {/* Logo */}
         <div className="mb-10 flex flex-col items-center">
           <div className="w-20 h-20 rounded-3xl bg-primary/10 border-2 border-primary/20 flex items-center justify-center mb-5 pulse-ring">
             <Glasses className="w-10 h-10 text-primary" />
@@ -25,21 +23,19 @@ const Index = () => {
           </p>
         </div>
 
-        {/* Tagline */}
         <p className="text-center text-muted-foreground mb-10 leading-relaxed text-lg">
-          ARグラス対応のリアルタイム介護AIアシスタント。
+          Real-time AI care assistant for AR glasses.
           <br />
-          カメラ映像からAIが介助場面を自動認識し、
+          AI automatically recognizes care scenes from
           <br />
-          音声とHUDで次の行動を指示します。
+          camera feed and guides your next action.
         </p>
 
-        {/* Features */}
         <div className="grid grid-cols-3 gap-3 mb-10 w-full">
           {[
-            { icon: Eye, label: "画像認識", desc: "カメラで自動判別" },
-            { icon: Mic, label: "音声ガイド", desc: "リアルタイム読上" },
-            { icon: Shield, label: "安全警告", desc: "危険を即時通知" },
+            { icon: Eye, label: "Recognition", desc: "Auto scene detection" },
+            { icon: Mic, label: "Voice Guide", desc: "Real-time narration" },
+            { icon: Shield, label: "Safety Alerts", desc: "Instant warnings" },
           ].map(({ icon: Icon, label, desc }) => (
             <div
               key={label}
@@ -54,17 +50,16 @@ const Index = () => {
           ))}
         </div>
 
-        {/* Start button */}
         <button
           onClick={() => navigate("/guide")}
           className="w-full py-5 rounded-2xl bg-primary text-primary-foreground font-bold text-xl tracking-wide hover:brightness-110 transition-all active:scale-[0.97] flex items-center justify-center gap-2"
         >
-          ガイドを開始する
+          Start Guide
           <ArrowRight className="w-5 h-5" />
         </button>
 
         <p className="mt-5 text-sm text-muted-foreground text-center">
-          ※ MVPではスマートフォンカメラを使用します
+          ※ MVP uses smartphone camera
         </p>
       </div>
     </div>
