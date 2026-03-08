@@ -107,9 +107,9 @@ const GuidePage = () => {
       {/* Patient info panel */}
       {camera.isActive && <PatientInfoPanel />}
 
-      {/* Top bar — scene label */}
+      {/* Top bar — scene label + LIVE indicator (below patient panel) */}
       {camera.isActive && (
-        <div className="absolute top-0 left-0 right-0 p-4 pt-[max(1rem,env(safe-area-inset-top))] z-10">
+        <div className="absolute top-[120px] left-0 right-0 px-4 z-10">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center">
