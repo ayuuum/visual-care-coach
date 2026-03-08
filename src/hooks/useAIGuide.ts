@@ -75,9 +75,14 @@ export function useAIGuide() {
       if (intervalRef.current) return;
       captureFrameRef.current = captureFrame;
       const frame = captureFrame();
-      if (frame) analyzeFrame(frame);
+      if (frame) {
+        analyzeFrame(frame);
+      } else {
+        // Video not ready yet — schedule retry
+        scheduleNext();
+      }
     },
-    [analyzeFrame]
+    [analyzeFrame, scheduleNext]
   );
 
   const stopPolling = useCallback(() => {
