@@ -102,7 +102,7 @@ const GuidePage = () => {
             <div className="flex flex-col gap-4">
               <button
                 onClick={handleStartCamera}
-                className="px-8 py-4 rounded-2xl bg-primary text-primary-foreground font-bold text-lg flex items-center justify-center gap-3 hover:brightness-110 transition-all active:scale-[0.97]"
+                className="px-8 py-5 rounded-2xl bg-primary text-primary-foreground font-bold text-xl flex items-center justify-center gap-3 hover:brightness-110 transition-all active:scale-[0.97]"
               >
                 <Camera className="w-5 h-5" />
                 カメラを起動する
