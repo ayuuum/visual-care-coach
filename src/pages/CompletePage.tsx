@@ -32,7 +32,7 @@ const CompletePage = () => {
         <div className="w-full px-8 py-6 mb-10 text-center rounded-2xl bg-secondary border border-border">
           <div className="flex items-center justify-center gap-2 mb-2">
             <Clock className="w-4 h-4 text-muted-foreground" />
-            <p className="text-xs text-muted-foreground font-mono uppercase tracking-widest">
+            <p className="text-sm text-muted-foreground font-mono uppercase tracking-widest">
               所要時間
             </p>
           </div>
