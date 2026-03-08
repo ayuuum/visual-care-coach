@@ -10,18 +10,37 @@ export function useCamera() {
   const start = useCallback(async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "environment", width: { ideal: 1280 }, height: { ideal: 720 } },
+        video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 }, height: { ideal: 720 } },
         audio: false,
       });
       streamRef.current = stream;
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        await videoRef.current.play();
-      }
+
+      const video = videoRef.current;
+      if (!video) throw new Error("VIDEO_ELEMENT_NOT_READY");
+
+      video.srcObject = stream;
+      video.muted = true;
+      video.setAttribute("playsinline", "true");
+      video.setAttribute("webkit-playsinline", "true");
+
+      await new Promise<void>((resolve, reject) => {
+        const timeout = window.setTimeout(() => reject(new Error("VIDEO_INIT_TIMEOUT")), 5000);
+        const onReady = () => {
+          window.clearTimeout(timeout);
+          resolve();
+        };
+        video.onloadedmetadata = onReady;
+        video.oncanplay = onReady;
+      });
+
+      await video.play();
       setIsActive(true);
       setError(null);
     } catch (err) {
-      setError("カメラへのアクセスが拒否されました");
+      streamRef.current?.getTracks().forEach((t) => t.stop());
+      streamRef.current = null;
+      setIsActive(false);
+      setError("カメラ映像を取得できません。権限とブラウザ設定を確認してください");
       console.error("Camera error:", err);
     }
   }, []);
