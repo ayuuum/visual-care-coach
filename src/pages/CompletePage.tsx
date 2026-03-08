@@ -46,7 +46,7 @@ const CompletePage = () => {
         <div className="flex gap-3 w-full">
           <button
             onClick={() => navigate("/guide")}
-            className="flex-1 py-4 rounded-2xl bg-primary text-primary-foreground font-bold text-base flex items-center justify-center gap-2 hover:brightness-110 transition-all active:scale-[0.97]"
+            className="flex-1 py-5 rounded-2xl bg-primary text-primary-foreground font-bold text-lg flex items-center justify-center gap-2 hover:brightness-110 transition-all active:scale-[0.97]"
           >
             <RotateCcw className="w-5 h-5" />
             もう一度
