@@ -20,7 +20,7 @@ const PatientInfoPanel = () => {
             <User className="w-5 h-5 text-primary" />
           </div>
           <span className="text-sm font-bold text-white text-center leading-tight">{p.name}</span>
-          <span className="text-xs text-white/60">{p.age}歳</span>
+          <span className="text-xs text-white/60">{p.age} yrs</span>
           <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/20 border border-primary/30 text-primary font-bold">
             {p.careLevel}
           </span>

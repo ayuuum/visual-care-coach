@@ -23,9 +23,9 @@ export default defineConfig(({ mode }) => ({
         navigateFallbackDenylist: [/^\/~oauth/],
       },
       manifest: {
-        name: "CareGlass — 介護AIアシスタント",
+        name: "CareGlass — AR Care Assistant",
         short_name: "CareGlass",
-        description: "ARグラス対応のリアルタイム介護AIガイドアプリ",
+        description: "Real-time AI care guide app for AR glasses",
         theme_color: "#3d8b6e",
         background_color: "#fcfcfc",
         display: "standalone",

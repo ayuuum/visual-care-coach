@@ -187,7 +187,7 @@ const GuidePage = () => {
                 ) : ai.response?.illustrationUrl ? (
                   <img
                     src={ai.response.illustrationUrl}
-                    alt="ケア手順イラスト"
+                    alt="Care procedure illustration"
                     className="w-full h-32 object-contain rounded-xl bg-white/5"
                   />
                 ) : null}

@@ -122,7 +122,7 @@ export function useAIGuide() {
 
         attempts += 1;
         if (attempts >= 20) {
-          setError("カメラ映像が取得できません。再起動してください");
+          setError("Unable to capture camera feed. Please restart.");
           setIsPaused(true);
           return;
         }
