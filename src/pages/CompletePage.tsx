@@ -20,14 +20,14 @@ const CompletePage = () => {
           <CheckCircle className="w-10 h-10 text-primary" />
         </div>
 
-        <h1 className="text-2xl font-bold text-foreground mb-2 hud-text-glow">
+        <h1 className="text-2xl font-bold text-foreground mb-2">
           {completed ? "ガイドが完了しました" : "ガイドを終了しました"}
         </h1>
 
         <p className="text-muted-foreground mb-8">お疲れ様でした</p>
 
         {/* Timer */}
-        <div className="hud-panel px-8 py-4 mb-10 text-center">
+        <div className="px-8 py-4 mb-10 text-center rounded-xl bg-secondary border border-border">
           <p className="text-xs text-muted-foreground font-mono uppercase tracking-wider mb-1">
             所要時間
           </p>
