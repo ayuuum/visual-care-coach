@@ -20,10 +20,19 @@ export function useAIGuide() {
   const [isPaused, setIsPaused] = useState(false);
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
   const lastImageInstructionRef = useRef<string>("");
+  const imageCacheRef = useRef<Map<string, string>>(new Map());
 
   const generateIllustration = useCallback(async (instruction: string, scene: string) => {
     if (lastImageInstructionRef.current === instruction) return;
     lastImageInstructionRef.current = instruction;
+
+    // Check cache first
+    const cached = imageCacheRef.current.get(instruction);
+    if (cached) {
+      setResponse(prev => prev ? { ...prev, illustrationUrl: cached } : prev);
+      return;
+    }
+
     setIsGeneratingImage(true);
     try {
       const { data, error: fnError } = await supabase.functions.invoke("generate-instruction-image", {
@@ -31,6 +40,7 @@ export function useAIGuide() {
       });
       if (fnError) throw fnError;
       if (data?.imageUrl) {
+        imageCacheRef.current.set(instruction, data.imageUrl);
         setResponse(prev => prev ? { ...prev, illustrationUrl: data.imageUrl } : prev);
       }
     } catch (err) {
