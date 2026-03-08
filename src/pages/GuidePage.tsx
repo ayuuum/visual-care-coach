@@ -41,6 +41,10 @@ const GuidePage = () => {
   useEffect(() => {
     if (ai.response?.instruction) {
       speech.speak(ai.response.instruction);
+      // In demo mode, advance to next image after AI responds
+      if (mode === "demo") {
+        demo.next();
+      }
     }
   }, [ai.response?.instruction]);
 
