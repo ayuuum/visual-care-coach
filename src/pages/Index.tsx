@@ -1,29 +1,32 @@
 import { useNavigate } from "react-router-dom";
-import { Glasses, Sparkles, Shield, Mic } from "lucide-react";
+import { Glasses, Sparkles, Shield, Mic, ArrowRight, Eye } from "lucide-react";
 
 const Index = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-6">
-      <div className="flex flex-col items-center max-w-md w-full">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-6 relative overflow-hidden">
+      {/* Subtle background glow */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-primary/8 rounded-full blur-[120px]" />
+      </div>
+
+      <div className="relative z-10 flex flex-col items-center max-w-md w-full animate-fade-in">
         {/* Logo */}
-        <div className="mb-8 flex items-center gap-3">
-          <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center">
-            <Glasses className="w-7 h-7 text-primary" />
+        <div className="mb-10 flex flex-col items-center">
+          <div className="w-20 h-20 rounded-3xl bg-primary/10 border-2 border-primary/20 flex items-center justify-center mb-5 pulse-ring">
+            <Glasses className="w-10 h-10 text-primary" />
           </div>
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight text-foreground">
-              CareGlass
-            </h1>
-            <p className="text-xs text-muted-foreground font-mono tracking-widest uppercase">
-              AR Glass AI Assistant
-            </p>
-          </div>
+          <h1 className="text-4xl font-bold tracking-tight text-foreground mb-1">
+            CareGlass
+          </h1>
+          <p className="text-xs text-muted-foreground font-mono tracking-[0.25em] uppercase">
+            AR Care Assistant
+          </p>
         </div>
 
         {/* Tagline */}
-        <p className="text-center text-muted-foreground mb-10 leading-relaxed">
+        <p className="text-center text-muted-foreground mb-10 leading-relaxed text-base">
           ARグラス対応のリアルタイム介護AIアシスタント。
           <br />
           カメラ映像からAIが介助場面を自動認識し、
@@ -34,16 +37,19 @@ const Index = () => {
         {/* Features */}
         <div className="grid grid-cols-3 gap-3 mb-10 w-full">
           {[
-            { icon: Sparkles, label: "AI認識" },
-            { icon: Mic, label: "音声ガイド" },
-            { icon: Shield, label: "安全警告" },
-          ].map(({ icon: Icon, label }) => (
+            { icon: Eye, label: "画像認識", desc: "カメラで自動判別" },
+            { icon: Mic, label: "音声ガイド", desc: "リアルタイム読上" },
+            { icon: Shield, label: "安全警告", desc: "危険を即時通知" },
+          ].map(({ icon: Icon, label, desc }) => (
             <div
               key={label}
-              className="flex flex-col items-center gap-2 py-4 px-2 rounded-xl bg-secondary border border-border"
+              className="flex flex-col items-center gap-2 py-5 px-3 rounded-2xl bg-secondary/80 border border-border hover-scale"
             >
-              <Icon className="w-5 h-5 text-primary" />
-              <span className="text-xs text-muted-foreground">{label}</span>
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                <Icon className="w-5 h-5 text-primary" />
+              </div>
+              <span className="text-sm font-semibold text-foreground">{label}</span>
+              <span className="text-[10px] text-muted-foreground text-center leading-tight">{desc}</span>
             </div>
           ))}
         </div>
@@ -51,12 +57,13 @@ const Index = () => {
         {/* Start button */}
         <button
           onClick={() => navigate("/guide")}
-          className="w-full py-4 rounded-xl bg-primary text-primary-foreground font-semibold text-lg tracking-wide hover:brightness-110 transition-all active:scale-[0.98]"
+          className="w-full py-4 rounded-2xl bg-primary text-primary-foreground font-bold text-lg tracking-wide hover:brightness-110 transition-all active:scale-[0.97] flex items-center justify-center gap-2"
         >
           ガイドを開始する
+          <ArrowRight className="w-5 h-5" />
         </button>
 
-        <p className="mt-4 text-xs text-muted-foreground text-center">
+        <p className="mt-5 text-xs text-muted-foreground text-center">
           ※ MVPではスマートフォンカメラを使用します
         </p>
       </div>
