@@ -46,9 +46,11 @@ serve(async (req) => {
       );
     }
 
-    // Strip data URL prefix for the image
-    const base64Data = frame.replace(/^data:image\/\w+;base64,/, "");
-    const imageUrl = `data:image/jpeg;base64,${base64Data}`;
+    // Ensure clean base64 and proper data URL
+    const base64Data = frame.replace(/^data:image\/[^;]+;base64,/, "");
+    // Re-encode to ensure URL-safe base64
+    const cleanBase64 = btoa(atob(base64Data));
+    const imageUrl = `data:image/jpeg;base64,${cleanBase64}`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
