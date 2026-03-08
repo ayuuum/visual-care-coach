@@ -1,52 +1,38 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Volume2, VolumeX, Square, AlertTriangle, WifiOff, RefreshCw, Loader2, Camera, Play, Eye, Activity } from "lucide-react";
+import { Volume2, VolumeX, Square, AlertTriangle, WifiOff, RefreshCw, Loader2, Camera, Eye, Activity } from "lucide-react";
 import { useCamera } from "@/hooks/useCamera";
 import { useSpeech } from "@/hooks/useSpeech";
 import { useAIGuide } from "@/hooks/useAIGuide";
-import { useDemo } from "@/hooks/useDemo";
 
 const GuidePage = () => {
   const navigate = useNavigate();
   const camera = useCamera();
-  const demo = useDemo();
   const speech = useSpeech();
   const ai = useAIGuide();
   const startTimeRef = useRef<number>(Date.now());
   const [hasStarted, setHasStarted] = useState(false);
-  const [mode, setMode] = useState<"none" | "camera" | "demo">("none");
+  const [started, setStarted] = useState(false);
   const [showInstruction, setShowInstruction] = useState(false);
 
   const handleStartCamera = async () => {
-    setMode("camera");
+    setStarted(true);
     await camera.start();
     startTimeRef.current = Date.now();
   };
 
-  const handleStartDemo = async () => {
-    setMode("demo");
-    await demo.start();
-    startTimeRef.current = Date.now();
-  };
-
-  const isActiveMode = mode === "camera" ? camera.isActive : mode === "demo" ? demo.isActive : false;
-
   useEffect(() => {
-    if (isActiveMode && !hasStarted) {
+    if (camera.isActive && !hasStarted) {
       setHasStarted(true);
-      const captureFn = mode === "demo" ? demo.captureFrame : camera.captureFrame;
-      ai.startPolling(captureFn);
+      ai.startPolling(camera.captureFrame);
     }
-  }, [isActiveMode, hasStarted]);
+  }, [camera.isActive, hasStarted]);
 
   useEffect(() => {
     if (ai.response?.instruction) {
       setShowInstruction(false);
       requestAnimationFrame(() => setShowInstruction(true));
       speech.speak(ai.response.instruction);
-      if (mode === "demo") {
-        demo.next();
-      }
     }
   }, [ai.response?.instruction]);
 
@@ -59,7 +45,6 @@ const GuidePage = () => {
   const handleStop = (completed = false) => {
     ai.stopPolling();
     camera.stop();
-    demo.stop();
     const elapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
     navigate("/complete", { state: { elapsed, completed } });
   };
@@ -72,24 +57,15 @@ const GuidePage = () => {
       {/* Camera feed */}
       <video
         ref={camera.videoRef}
-        className={`absolute inset-0 w-full h-full object-cover ${mode !== "camera" || !camera.isActive ? 'hidden' : ''}`}
+        className={`absolute inset-0 w-full h-full object-cover ${!camera.isActive ? 'hidden' : ''}`}
         autoPlay
         playsInline
         muted
       />
       <canvas ref={camera.canvasRef} className="hidden" />
 
-      {/* Demo image feed */}
-      {mode === "demo" && demo.isActive && (
-        <img
-          src={demo.currentImage}
-          alt="デモ画像"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-      )}
-
       {/* Pre-start screen */}
-      {mode === "none" && !camera.error && (
+      {!started && !camera.error && (
         <div className="absolute inset-0 flex items-center justify-center bg-background z-30">
           <div className="text-center px-6 animate-fade-in">
             <div className="w-24 h-24 rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center mx-auto mb-8 pulse-ring">
@@ -97,24 +73,15 @@ const GuidePage = () => {
             </div>
             <h2 className="text-3xl font-bold text-foreground mb-3">ガイドを開始</h2>
             <p className="text-lg text-muted-foreground mb-10 leading-relaxed">
-              カメラまたはデモ画像で<br />AIガイドを体験できます
+              カメラを起動して<br />AIガイドを体験できます
             </p>
-            <div className="flex flex-col gap-4">
-              <button
-                onClick={handleStartCamera}
-                className="px-8 py-5 rounded-2xl bg-primary text-primary-foreground font-bold text-xl flex items-center justify-center gap-3 hover:brightness-110 transition-all active:scale-[0.97]"
-              >
-                <Camera className="w-5 h-5" />
-                カメラを起動する
-              </button>
-              <button
-                onClick={handleStartDemo}
-                className="px-8 py-5 rounded-2xl bg-secondary text-secondary-foreground font-bold text-xl flex items-center justify-center gap-3 border border-border hover:bg-accent transition-all active:scale-[0.97]"
-              >
-                <Play className="w-5 h-5" />
-                デモモードで体験
-              </button>
-            </div>
+            <button
+              onClick={handleStartCamera}
+              className="w-full px-8 py-5 rounded-2xl bg-primary text-primary-foreground font-bold text-xl flex items-center justify-center gap-3 hover:brightness-110 transition-all active:scale-[0.97]"
+            >
+              <Camera className="w-6 h-6" />
+              カメラを起動する
+            </button>
             <button
               onClick={() => navigate("/")}
               className="block mx-auto mt-6 text-sm text-muted-foreground hover:text-foreground transition-colors"
@@ -137,17 +104,8 @@ const GuidePage = () => {
         </div>
       )}
 
-      {/* Demo badge */}
-      {mode === "demo" && demo.isActive && (
-        <div className="absolute top-4 right-4 z-20">
-          <span className="px-4 py-1.5 rounded-full bg-primary/80 text-primary-foreground text-xs font-bold uppercase tracking-widest backdrop-blur-md">
-            DEMO
-          </span>
-        </div>
-      )}
-
       {/* Top bar — scene label */}
-      {isActiveMode && (
+      {camera.isActive && (
         <div className="absolute top-0 left-0 right-0 p-4 pt-[max(1rem,env(safe-area-inset-top))] z-10">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -202,7 +160,7 @@ const GuidePage = () => {
       )}
 
       {/* Instruction panel — the main focus area */}
-      {isActiveMode && (
+      {camera.isActive && (
         <div className="absolute bottom-28 left-0 right-0 px-4 z-10">
           <div
             className={`rounded-2xl backdrop-blur-xl border-2 transition-all duration-300 ${
@@ -234,7 +192,7 @@ const GuidePage = () => {
       )}
 
       {/* Bottom controls */}
-      {isActiveMode && (
+      {camera.isActive && (
         <div className="absolute bottom-6 left-0 right-0 px-4 pb-[max(0.5rem,env(safe-area-inset-bottom))] z-10 flex items-center justify-center gap-4">
           <button
             onClick={speech.toggle}
