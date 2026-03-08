@@ -57,7 +57,7 @@ serve(async (req) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "openai/gpt-5-mini",
+        model: "openai/gpt-5.2",
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
           {
