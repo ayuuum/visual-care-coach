@@ -223,7 +223,7 @@ const GuidePage = () => {
               }`}>
                 <Activity className={`w-5 h-5 ${isWarning ? "text-amber-300" : "text-primary"}`} />
               </div>
-              <p className={`text-xl font-bold leading-relaxed ${
+              <p className={`text-2xl font-bold leading-relaxed ${
                 isWarning ? "text-amber-100" : "text-white"
               }`}>
                 {ai.response?.instruction ?? "カメラを現場に向けてください"}
