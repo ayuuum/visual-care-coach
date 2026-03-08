@@ -4,6 +4,7 @@ import { Volume2, VolumeX, Square, AlertTriangle, WifiOff, RefreshCw, Loader2, C
 import { useCamera } from "@/hooks/useCamera";
 import { useSpeech } from "@/hooks/useSpeech";
 import { useAIGuide } from "@/hooks/useAIGuide";
+import PatientInfoPanel from "@/components/PatientInfoPanel";
 
 const GuidePage = () => {
   const navigate = useNavigate();
@@ -102,6 +103,9 @@ const GuidePage = () => {
           <div className="scanning-line absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
         </div>
       )}
+
+      {/* Patient info panel */}
+      {camera.isActive && <PatientInfoPanel />}
 
       {/* Top bar — scene label */}
       {camera.isActive && (
