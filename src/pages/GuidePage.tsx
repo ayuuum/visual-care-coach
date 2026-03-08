@@ -241,9 +241,9 @@ const GuidePage = () => {
             className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all active:scale-95"
           >
             {speech.isEnabled ? (
-              <Volume2 className="w-5 h-5 text-white" />
+              <Volume2 className="w-6 h-6 text-white" />
             ) : (
-              <VolumeX className="w-5 h-5 text-white/40" />
+              <VolumeX className="w-6 h-6 text-white/40" />
             )}
           </button>
 
