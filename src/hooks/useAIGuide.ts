@@ -66,7 +66,12 @@ export function useAIGuide() {
       });
 
       if (fnError) throw fnError;
-      if (data) setResponse(data as AIResponse);
+      if (data) {
+        setResponse(data as AIResponse);
+        if (data.instruction) {
+          generateIllustration(data.instruction, data.scene);
+        }
+      }
       setError(null);
       errorCountRef.current = 0;
       currentIntervalRef.current = BASE_INTERVAL;
