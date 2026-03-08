@@ -1,11 +1,11 @@
 import { Pill, AlertTriangle, User } from "lucide-react";
 
 const DUMMY_PATIENT = {
-  name: "田中 太郎",
+  name: "Taro Tanaka",
   age: 85,
-  careLevel: "要介護3",
-  medications: ["ワーファリン（朝食後）", "アムロジピン（朝夕）", "メトホルミン（毎食後）"],
-  precautions: ["転倒リスク高（右膝に痛み）", "嚥下機能低下 – とろみ付き水分", "血液サラサラの薬服用中 – 出血注意"],
+  careLevel: "Care Level 3",
+  medications: ["Warfarin (after breakfast)", "Amlodipine (morning & evening)", "Metformin (after each meal)"],
+  precautions: ["High fall risk (right knee pain)", "Swallowing difficulty – thickened fluids", "On blood thinners – watch for bleeding"],
 };
 
 const PatientInfoPanel = () => {
@@ -20,7 +20,7 @@ const PatientInfoPanel = () => {
             <User className="w-5 h-5 text-primary" />
           </div>
           <span className="text-sm font-bold text-white text-center leading-tight">{p.name}</span>
-          <span className="text-xs text-white/60">{p.age}歳</span>
+          <span className="text-xs text-white/60">{p.age} yrs</span>
           <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/20 border border-primary/30 text-primary font-bold">
             {p.careLevel}
           </span>

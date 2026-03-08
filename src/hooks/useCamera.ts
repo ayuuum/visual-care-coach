@@ -40,7 +40,7 @@ export function useCamera() {
       streamRef.current?.getTracks().forEach((t) => t.stop());
       streamRef.current = null;
       setIsActive(false);
-      setError("カメラ映像を取得できません。権限とブラウザ設定を確認してください");
+      setError("Unable to access camera. Please check permissions and browser settings.");
       console.error("Camera error:", err);
     }
   }, []);

@@ -95,10 +95,10 @@ export function useAIGuide() {
       );
 
       if (errorCountRef.current >= MAX_CONSECUTIVE_ERRORS) {
-        setError("AI分析に接続できません。再試行中...");
+        setError("Cannot connect to AI analysis. Retrying...");
         setIsPaused(true);
       } else {
-        setError("AI分析に失敗しました");
+        setError("AI analysis failed");
       }
     } finally {
       setIsAnalyzing(false);
@@ -122,7 +122,7 @@ export function useAIGuide() {
 
         attempts += 1;
         if (attempts >= 20) {
-          setError("カメラ映像が取得できません。再起動してください");
+          setError("Unable to capture camera feed. Please restart.");
           setIsPaused(true);
           return;
         }
