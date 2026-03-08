@@ -179,7 +179,7 @@ const GuidePage = () => {
               <Loader2 className="w-8 h-8 text-white animate-spin" />
             </div>
             <div className="text-center">
-              <p className="text-lg font-bold text-white mb-1">AI分析を開始中</p>
+              <p className="text-xl font-bold text-white mb-1">AI分析を開始中</p>
               <p className="text-sm text-white/50 font-mono">接続中...</p>
             </div>
           </div>
