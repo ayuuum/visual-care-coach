@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Volume2, VolumeX, Square, AlertTriangle, WifiOff, RefreshCw, Loader2, Camera, Eye, Activity } from "lucide-react";
+import { Volume2, VolumeX, Square, AlertTriangle, WifiOff, RefreshCw, Loader2, Camera, Eye, Activity, ImageIcon } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useCamera } from "@/hooks/useCamera";
 import { useSpeech } from "@/hooks/useSpeech";
 import { useAIGuide } from "@/hooks/useAIGuide";
